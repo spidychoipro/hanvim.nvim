@@ -13,28 +13,31 @@
 
 ## 📦 Installation
 
-### [lazy.nvim](https://github.com/folke/lazy.nvim) (추천)
+### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
--- 로컬 플러그인
-{
-    dir = "~/path/to/hanvim.nvim",
-    opts = {
-        toggle_key = "<F12>",
-    },
-}
+{ "spidychoipro/hanvim.nvim", opts = {} }
 ```
 
+with custom options:
+
 ```lua
--- GitHub (추후)
--- { "spidychoipro/hanvim.nvim", opts = {} }
+{
+    "spidychoipro/hanvim.nvim",
+    opts = {
+        toggle_key = "<F12>",
+        aliases = {
+            문서열기 = "e doc/",
+        },
+    },
+}
 ```
 
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use {
-    "~/path/to/hanvim.nvim",
+    "spidychoipro/hanvim.nvim",
     config = function()
         require("hanvim").setup({ toggle_key = "<F12>" })
     end,
@@ -44,7 +47,7 @@ use {
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug '~/path/to/hanvim.nvim'
+Plug 'spidychoipro/hanvim.nvim'
 lua require("hanvim").setup({ toggle_key = "<F12>" })
 ```
 
@@ -78,7 +81,7 @@ lua require("hanvim").setup({ toggle_key = "<F12>" })
 
 ## ⚙️ Configuration
 
-### Default setup
+### Default
 
 ```lua
 require("hanvim").setup()
@@ -91,7 +94,6 @@ require("hanvim").setup({
     enabled = true,              -- 최초 활성화 여부
     toggle_key = "<F12>",        -- ON/OFF 전환 키 (nil = 매핑 안 함)
     aliases = {                  -- 기본 약어 오버라이드 / 추가
-        문서열기 = "e doc/",
         탭닫기 = "tabclose",
     },
 })
@@ -106,72 +108,72 @@ require("hanvim").setup({
 
 ### 편집
 
-| Input | Expands to | Description |
-|---|---|---|
-| `저장` | `w` | 저장 |
-| `종료` | `q` | 종료 |
-| `전부저장` | `wqa` | 전체 저장 후 종료 |
-| `저장종료` | `wq` | 저장 후 종료 |
-| `강제종료` | `q!` | 강제 종료 |
-| `강제저장종료` | `wq!` | 강제 저장 후 종료 |
-| `전체저장` | `wa` | 모든 버퍼 저장 |
-| `저장실행` | `w \| !%:p` | 저장 후 실행 |
-| `취소` | `u` | 실행 취소 |
-| `다시실행` | `red` | 다시 실행 |
-| `모두선택` | `%y` | 전체 복사 |
+| Input | Expands to |
+|---|---|
+| `저장` | `w` |
+| `종료` | `q` |
+| `전부저장` | `wqa` |
+| `저장종료` | `wq` |
+| `강제종료` | `q!` |
+| `강제저장종료` | `wq!` |
+| `전체저장` | `wa` |
+| `저장실행` | `w \| !%:p` |
+| `취소` | `u` |
+| `다시실행` | `red` |
+| `모두선택` | `%y` |
 
 ### 파일 / 버퍼
 
-| Input | Expands to | Description |
-|---|---|---|
-| `새파일` | `new` | 새 파일 |
-| `수정` | `e` | 파일 열기 |
-| `버퍼목록` | `ls` | 버퍼 목록 |
-| `버퍼삭제` | `bd` | 버퍼 삭제 |
-| `다음버퍼` | `bn` | 다음 버퍼 |
-| `이전버퍼` | `bp` | 이전 버퍼 |
-| `실행파일` | `!%:p` | 현재 파일 실행 |
+| Input | Expands to |
+|---|---|
+| `새파일` | `new` |
+| `수정` | `e` |
+| `버퍼목록` | `ls` |
+| `버퍼삭제` | `bd` |
+| `다음버퍼` | `bn` |
+| `이전버퍼` | `bp` |
+| `실행파일` | `!%:p` |
 
 ### 창 / 탭
 
-| Input | Expands to | Description |
-|---|---|---|
-| `세로분할` | `vsplit` | 세로 분할 |
-| `가로분할` | `split` | 가로 분할 |
-| `탭새파일` | `tabnew` | 새 탭 |
-| `탭목록` | `tabs` | 탭 목록 |
-| `다음탭` | `tabn` | 다음 탭 |
-| `이전탭` | `tabp` | 이전 탭 |
+| Input | Expands to |
+|---|---|
+| `세로분할` | `vsplit` |
+| `가로분할` | `split` |
+| `탭새파일` | `tabnew` |
+| `탭목록` | `tabs` |
+| `다음탭` | `tabn` |
+| `이전탭` | `tabp` |
 
 ### 검색 / 치환
 
-| Input | Expands to | Description |
-|---|---|---|
-| `찾기` | `/` | 전방 검색 |
-| `바꾸기` | `%s` | 문자열 치환 |
+| Input | Expands to |
+|---|---|
+| `찾기` | `/` |
+| `바꾸기` | `%s` |
 
 ### 옵션 / 도구
 
-| Input | Expands to | Description |
-|---|---|---|
-| `줄번호` | `set nu` | 줄번호 켜기 |
-| `상대번호` | `set rnu` | 상대 줄번호 켜기 |
-| `줄번호끄기` | `set nonu` | 줄번호 끄기 |
-| `설정` | `set` | 옵션 설정 |
-| `도움말` | `help` | 도움말 |
-| `터미널` | `term` | 터미널 열기 |
-| `검사` | `checkhealth` | 헬스 체크 |
-| `변경사항` | `undotree` | 변경 이력 |
-| `북마크` | `marks` | 북마크 목록 |
+| Input | Expands to |
+|---|---|
+| `줄번호` | `set nu` |
+| `상대번호` | `set rnu` |
+| `줄번호끄기` | `set nonu` |
+| `설정` | `set` |
+| `도움말` | `help` |
+| `터미널` | `term` |
+| `검사` | `checkhealth` |
+| `변경사항` | `undotree` |
+| `북마크` | `marks` |
 
 ### LSP / 플러그인
 
-| Input | Expands to | Description |
-|---|---|---|
-| `포맷` | `lua vim.lsp.buf.format()` | LSP 포맷 |
-| `파일찾기` | `Telescope find_files` | Telescope 파일 찾기 |
-| `텍스트찾기` | `Telescope live_grep` | Telescope 텍스트 검색 |
-| `실행` | `!` | 셸 명령 실행 |
+| Input | Expands to |
+|---|---|
+| `포맷` | `lua vim.lsp.buf.format()` |
+| `파일찾기` | `Telescope find_files` |
+| `텍스트찾기` | `Telescope live_grep` |
+| `실행` | `!` |
 
 ---
 
@@ -202,7 +204,7 @@ require("lualine").setup({
 검색(`/`, `?`) 모드에서는 확장되지 않습니다.
 
 활성화 상태는 `g:hanvim_enabled` Vim 변수로 관리되며,  
-`:HanvimToggle` 또는 `<F12>`로 즉시 전환할 수 있습니다.
+`:HanvimToggle` 또는 매핑된 키로 즉시 전환할 수 있습니다.
 
 ---
 
