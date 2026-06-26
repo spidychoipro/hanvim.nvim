@@ -1,0 +1,85 @@
+*hanvim.txt*  Hanvim - Korean command aliases for Neovim
+
+==============================================================================
+INTRODUCTION                                             *hanvim-introduction*
+
+Hanvim provides Korean command aliases for Neovim.
+
+Most commands use |user-commands| via nvim_create_user_command().
+For interactive expansion (search, substitute, shell) |cabbrev| is used.
+
+Usage:>
+    :저장<CR>      -> :w
+    :종료<CR>      -> :q
+    :저장!<CR>     -> :w!
+    :저장 파일<CR> -> :w 파일
+    :도움말<CR>    -> :help
+<
+
+==============================================================================
+USER COMMANDS                                            *hanvim-commands*
+
+Use |:command!|, arguments, and |:command-completion|.
+
+Command              Maps to        Bang   Args~
+------               -------        -----  ----
+저장                 w              yes    file
+종료                 q              yes    -
+전부저장              wqa            yes    -
+저장종료              wq             yes    -
+강제종료              q!             yes    -
+강제저장종료           wq!            yes    -
+전체저장              wa             yes    -
+새파일                new            yes    -
+수정                 e              yes    file
+세로분할              vsplit         yes    file
+가로분할              split          yes    file
+탭새파일              tabnew         yes    file
+도움말                help           yes    -
+취소                 u              no     -
+다시실행              red            no     -
+줄번호                set nu         no     -
+상대번호              set rnu        no     -
+줄번호끄기             set nonu       no     -
+모두선택              %y             no     -
+버퍼목록              ls             no     -
+버퍼삭제              bd             yes    -
+다음버퍼              bn             no     -
+이전버퍼              bp             no     -
+탭목록                tabs           no     -
+다음탭                tabn           no     -
+이전탭                tabp           no     -
+설정                 set            no     option
+터미널                term           yes    -
+검사                 checkhealth    yes    -
+변경사항              undotree       no     -
+북마크                marks          no     -
+파일찾기              Telescope      yes    -
+텍스트찾기             Telescope      yes    -
+
+==============================================================================
+EXPAND ALIASES                                            *hanvim-expand*
+
+These expand the Korean word in-place using |cabbrev| for interactive use:>
+
+    :찾기 패턴<CR>     -> :/패턴<CR>
+    :바꾸기/old/new/g  -> :%s/old/new/g
+    :실행 ls -la<CR>   -> :!ls -la<CR>
+<
+
+==============================================================================
+CONFIGURATION                                             *hanvim-configuration*
+
+Override or add commands:>
+
+    require("hanvim").setup({
+        commands = {
+            문서수정 = "e doc",
+        },
+        expand = {
+            새찾기 = "/",
+        },
+    })
+<
+==============================================================================
+ vim:tw=78:ts=8:noet:ft=help:norl:
