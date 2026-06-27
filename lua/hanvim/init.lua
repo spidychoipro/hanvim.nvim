@@ -1,20 +1,6 @@
 local M = {}
 M.enabled = true
 
-local function esc(str)
-    return str:gsub("'", "''")
-end
-
-local function smart_cabbrev(korean, english)
-    vim.cmd(string.format(
-        "cabbrev <expr> %s (getcmdtype() == ':' && g:hanvim_enabled && getcmdpos() <= %d) ? '%s' : '%s'",
-        korean,
-        #korean + 1,
-        esc(english),
-        esc(korean)
-    ))
-end
-
 local defaults = {
     저장 = "w",
     종료 = "q",
@@ -56,6 +42,31 @@ local defaults = {
     실행파일 = "!%:p",
     저장실행 = "w | !%:p",
 }
+
+local function build_sorted_aliases(aliases)
+    local sorted = {}
+    for korean, english in pairs(aliases) do
+        table.insert(sorted, { korean = korean, english = english, len = #korean })
+    end
+    table.sort(sorted, function(a, b) return a.len > b.len end)
+    return sorted
+end
+
+local function expand_alias(line, sorted_aliases)
+    for _, alias in ipairs(sorted_aliases) do
+        local byte_len = alias.len
+        if #line >= byte_len then
+            local prefix = line:sub(1, byte_len)
+            if prefix == alias.korean then
+                local rest = line:sub(byte_len + 1)
+                if rest == '' or rest:match('^[%s%p]') then
+                    return alias.english, rest, #alias.english
+                end
+            end
+        end
+    end
+    return nil
+end
 
 vim.api.nvim_create_user_command("HanvimToggle", function()
     M.enabled = not M.enabled
@@ -101,20 +112,41 @@ M.setup = function(opts)
     M.enabled = opts.enabled ~= false
     vim.g.hanvim_enabled = M.enabled
 
+    local sorted_aliases = build_sorted_aliases(M.aliases)
     local group = vim.api.nvim_create_augroup("Hanvim", { clear = true })
+    local processing = false
 
     if opts.toggle_key then
-        vim.api.nvim_set_keymap("n", opts.toggle_key, ":HanvimToggle<CR>",
+        vim.keymap.set("n", opts.toggle_key, ":HanvimToggle<CR>",
             { noremap = true, silent = true, desc = "Toggle Hanvim" })
     end
 
-    vim.api.nvim_create_autocmd("VimEnter", {
+    vim.api.nvim_create_autocmd("CmdlineChanged", {
         group = group,
-        once = true,
         callback = function()
-            for korean, english in pairs(M.aliases) do
-                smart_cabbrev(korean, english)
+            if processing or not M.enabled then
+                return
             end
+
+            local cmdtype = vim.fn.getcmdtype()
+            if cmdtype ~= ':' then
+                return
+            end
+
+            local line = vim.fn.getcmdline()
+            if line == '' then
+                return
+            end
+
+            local expanded, rest, english_len = expand_alias(line, sorted_aliases)
+            if not expanded then
+                return
+            end
+
+            processing = true
+            pcall(vim.fn.setcmdline, expanded)
+            vim.fn.setcmdpos(english_len + 1)
+            processing = false
         end,
     })
 end
