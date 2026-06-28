@@ -104,6 +104,15 @@ vim.api.nvim_create_user_command("HanvimList", function()
         title_pos = "center",
     })
     vim.wo[win].winhl = "Normal:NormalFloat,FloatBorder:FloatBorder"
+
+    local close = function()
+        if vim.api.nvim_win_is_valid(win) then
+            vim.api.nvim_win_close(win, true)
+        end
+    end
+
+    vim.keymap.set("n", "q", close, { buffer = buf, silent = true, nowait = true })
+    vim.keymap.set("n", "<Esc>", close, { buffer = buf, silent = true, nowait = true })
 end, {})
 
 M.setup = function(opts)
