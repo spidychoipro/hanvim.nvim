@@ -1,11 +1,7 @@
 <p align="center">
   <h1 align="center">hanvim.nvim</h1>
   <p align="center">
-    한국어 명령어로 Neovim을 제어하세요.
-    <br>
-    <code>:저장</code> → <code>:w</code> &nbsp;·&nbsp; <code>:종료</code> → <code>:q</code> &nbsp;·&nbsp; <code>:포맷</code> → <code>vim.lsp.buf.format()</code>
-    <br>
-    <code>:파일찾기</code> → <code>:Telescope find_files</code> &nbsp;·&nbsp; <code>:실행파일</code> → <code>:!%:p</code>
+    <code>:저장</code> → <code>:w</code> · <code>:종료</code> → <code>:q</code>
   </p>
   <p align="center">
     <a href="https://github.com/spidychoipro/hanvim.nvim/releases">
@@ -13,9 +9,6 @@
     </a>
     <a href="https://github.com/spidychoipro/hanvim.nvim">
       <img alt="Neovim" src="https://img.shields.io/badge/Neovim-0.7+-green?style=for-the-badge&logo=neovim">
-    </a>
-    <a href="https://github.com/spidychoipro/hanvim.nvim/stargazers">
-      <img alt="Stars" src="https://img.shields.io/github/stars/spidychoipro/hanvim.nvim?style=for-the-badge&logo=github">
     </a>
   </p>
 </p>
