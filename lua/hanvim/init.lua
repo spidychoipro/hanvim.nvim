@@ -153,8 +153,8 @@ M.setup = function(opts)
             end
 
             processing = true
-            pcall(vim.fn.setcmdline, expanded)
-            vim.fn.setcmdpos(english_len + 1)
+            pcall(vim.fn.setcmdline, expanded .. (rest or ""))
+            vim.fn.setcmdpos(#expanded + 1)
             processing = false
         end,
     })
